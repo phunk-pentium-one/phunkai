@@ -1,0 +1,151 @@
+============================================================
+  PHUNK OLHOR AI — Panduan Deploy ke Vercel + Railway
+  (Menggunakan VSCode)
+============================================================
+
+STRUKTUR FOLDER:
+  frontend/           <- Deploy ke Vercel
+    index.html
+    style.css
+    script.js
+    vercel.json
+  backend/            <- Deploy ke Railway
+    server.js
+    package.json
+
+============================================================
+  LANGKAH 1 — Siapkan akun gratis
+============================================================
+
+1. Vercel   -> https://vercel.com  (daftar pakai GitHub)
+2. Railway  -> https://railway.app (daftar pakai GitHub)
+3. Neon     -> https://neon.tech   (database PostgreSQL gratis)
+4. Groq     -> https://console.groq.com (API AI gratis)
+
+============================================================
+  LANGKAH 2 — Install Vercel CLI di VSCode Terminal
+============================================================
+
+Buka terminal di VSCode (Ctrl+`) lalu ketik:
+
+  npm install -g vercel
+
+============================================================
+  LANGKAH 3 — Deploy FRONTEND ke Vercel
+============================================================
+
+1. Buka folder "frontend/" di VSCode
+2. Buka terminal, arahkan ke folder frontend:
+     cd path/ke/folder/frontend
+
+3. Login Vercel:
+     vercel login
+
+4. Deploy:
+     vercel --prod
+
+5. Vercel akan bertanya beberapa hal, jawab:
+     - Set up and deploy? -> Y
+     - Which scope? -> pilih akun Anda
+     - Link to existing project? -> N
+     - Project name? -> phunk-olhor-ai (atau terserah)
+     - In which directory? -> ./ (enter saja)
+     - Override settings? -> N
+
+6. Selesai! Anda dapat URL seperti:
+     https://phunk-olhor-ai.vercel.app
+
+============================================================
+  LANGKAH 4 — Siapkan database di Neon.tech (GRATIS)
+============================================================
+
+1. Buka https://neon.tech -> Sign Up gratis
+2. Klik "New Project" -> beri nama "phunk-olhor-ai"
+3. Setelah dibuat, klik "Connection Details"
+4. Copy "Connection string" yang terlihat seperti:
+     postgresql://user:password@ep-xxx.neon.tech/neondb?sslmode=require
+5. Simpan string ini, akan dipakai di Langkah 5
+
+============================================================
+  LANGKAH 5 — Deploy BACKEND ke Railway
+============================================================
+
+1. Buka https://railway.app -> Login pakai GitHub
+
+2. Klik "New Project" -> "Deploy from GitHub repo"
+   ATAU klik "New Project" -> "Empty Project"
+
+3. Pilih "Add a Service" -> "GitHub Repo"
+   (Anda perlu upload folder backend/ ke GitHub dulu)
+
+   Cara upload ke GitHub:
+   a. Buat repo baru di https://github.com/new
+   b. Di VSCode terminal, masuk ke folder backend/:
+        cd path/ke/folder/backend
+        git init
+        git add .
+        git commit -m "first commit"
+        git remote add origin https://github.com/USERNAME/REPO.git
+        git push -u origin main
+
+4. Di Railway, pilih repo yang baru dibuat
+
+5. Railway otomatis mendeteksi Node.js dan deploy
+
+============================================================
+  LANGKAH 6 — Set Environment Variables di Railway
+============================================================
+
+Di Railway dashboard:
+1. Klik service backend Anda
+2. Klik tab "Variables"
+3. Klik "Add Variable" dan tambahkan:
+
+   DATABASE_URL  =  postgresql://user:password@ep-xxx.neon.tech/neondb?sslmode=require
+                    (dari Neon.tech tadi)
+
+   GROQ_API_KEY  =  gsk_xxxxxxxxxxxxxxxxxxxxxxxxxx
+                    (dari console.groq.com)
+
+4. Railway otomatis restart server setelah save
+
+5. Klik tab "Settings" -> "Networking" -> "Generate Domain"
+   Anda dapat URL backend seperti:
+     https://phunk-olhor-ai-backend.up.railway.app
+
+============================================================
+  LANGKAH 7 — Hubungkan Frontend ke Backend
+============================================================
+
+Buka file frontend/script.js di VSCode,
+cari baris ini di paling atas:
+
+  const API_BASE_URL = window.PHUNK_API_URL || "";
+
+Ganti menjadi (isi URL Railway Anda):
+
+  const API_BASE_URL = "https://phunk-olhor-ai-backend.up.railway.app";
+
+Lalu deploy ulang frontend:
+
+  vercel --prod
+
+============================================================
+  SELESAI!
+============================================================
+
+Frontend (Vercel):  https://phunk-olhor-ai.vercel.app
+Backend (Railway):  https://phunk-olhor-ai-backend.up.railway.app
+
+Buka URL Vercel di browser -> website AI Anda sudah online!
+
+============================================================
+  RINGKASAN LINK PENTING
+============================================================
+
+Vercel CLI docs  : https://vercel.com/docs/cli
+Railway docs     : https://docs.railway.app
+Neon.tech        : https://neon.tech
+Groq API keys    : https://console.groq.com/keys
+
+============================================================
