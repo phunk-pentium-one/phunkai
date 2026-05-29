@@ -121,7 +121,19 @@ html, body { height: 100%; font-family: 'Inter', sans-serif; background: var(--b
 .btn-delete svg { width: 14px; height: 14px; }
 
 /* ── Main area ── */
-.main { flex: 1; display: flex; flex-direction: column; overflow: hidden; background: var(--bg); }
+/* Cari kode .main Anda, lalu sesuaikan menjadi seperti ini */
+.main {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    background: var(--bg);
+    
+    /* TAMBAHKAN DUA BARIS INI */
+    height: 100vh;           /* Mengunci tinggi utama setinggi layar penuh */
+    position: relative;       /* Membuat acuan koordinat lapisan */
+}
+
 
 .topbar {
   display: flex; align-items: center; justify-content: space-between;
@@ -212,13 +224,19 @@ html, body { height: 100%; font-family: 'Inter', sans-serif; background: var(--b
 /* Error toast */
 .error-msg { background: rgba(255,77,109,0.12); border: 1px solid var(--error); border-radius: 8px; padding: 10px 16px; color: var(--error); font-size: 13px; margin: 0 auto; max-width: 500px; text-align: center; }
 
-/* ── Input ── */
-.input-area {
-  padding: 16px 20px; border-top: 1px solid var(--border);
-  background: var(--bg2);
-}
 .status-bar { font-family: 'JetBrains Mono', monospace; font-size: 10px; color: var(--text3); text-align: center; margin-bottom: 10px; letter-spacing: 0.5px; }
-.input-row { display: flex; gap: 10px; align-items: flex-end; }
+/* GANTI kode .input-area-anda sebelumnya dengan kode di bawah ini */
+.input-row {
+    display: flex;
+    gap: 10px;
+    align-items: flex-end;
+    position: relative;        /* Wajib agar z-index aktif */
+    z-index: 10;               /* Memastikan berada di lapisan paling depan */
+    background: var(--bg2);    /* Memberi warna latar solid agar teks chat di belakangnya tertutup */
+    padding: 16px;             /* Memberi ruang pembungkus area input */
+    border-top: 1px solid var(--border); /* Garis pembatas tipis di atas input */
+}
+
 .input-box {
   flex: 1; resize: none; padding: 12px 16px;
   background: var(--input-bg); color: var(--text);
@@ -251,10 +269,28 @@ html, body { height: 100%; font-family: 'Inter', sans-serif; background: var(--b
 @media (max-width: 680px) {
   .sidebar { position: fixed; top: 0; left: 0; height: 100%; transform: translateX(-100%); }
   .sidebar.open { transform: translateX(0); }
-  .sidebar-overlay { display: block; }
-  .sidebar-overlay.visible { display: block; }
+  .sidebar-overlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.5);
+    z-index: 99;
+  }
+  .sidebar-overlay.visible {
+    display: block;
+    pointer-events: auto; /* Klik baru aktif mengunci layar belakang saat sidebar terbuka */
+}
   .btn-menu { display: flex; }
   .chat-area { padding: 16px 12px; }
   .input-area { padding: 12px; }
   .msg { max-width: 100%; }
+}
+/* Salin dan tempel kode ini di bagian paling bawah file CSS Anda */
+@media (max-width: 768px) {
+    .chat-area {
+        height: 100%;             /* Memaksa mengikuti tinggi sisa layar */
+        min-height: 0;            /* Mengganti default flexbox yang sering bocor */
+        flex-shrink: 1;           /* Mengizinkan elemen menyusut jika ruang sempit */
+        padding: 16px 12px;       /* Opsional: Memperkecil jarak padding di HP agar lebih luas */
+    }
 }
