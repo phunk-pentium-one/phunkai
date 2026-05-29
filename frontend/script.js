@@ -1,7 +1,7 @@
 // ── Phunk Olhor AI — script.js ──
 // Ganti API_BASE_URL dengan URL Railway backend Anda setelah deploy
 // Contoh: const API_BASE_URL = "https://phunk-olhor-ai.up.railway.app";
-const API_BASE_URL = window.PHUNK_API_URL || "";
+const API_BASE_URL = "https://phunkai-backend-production.up.railway.app";
 
 // ── State ──
 let conversations = [];
